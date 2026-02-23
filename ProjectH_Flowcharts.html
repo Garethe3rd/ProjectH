@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project H - Complete Flowcharts</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            background: #1a1a1a;
+            color: #f5f0e8;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #c9a84c;
+            border-bottom: 3px solid #8b0000;
+            padding-bottom: 10px;
+            text-align: center;
+        }
+        h2 {
+            color: #8b0000;
+            margin-top: 60px;
+            border-left: 6px solid #c9a84c;
+            padding-left: 15px;
+        }
+        .chart-container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 30px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        .note {
+            background: #2e2e2e;
+            border-left: 4px solid #c9a84c;
+            padding: 15px;
+            margin: 20px 0;
+            font-style: italic;
+            color: #aaa;
+        }
+        .legend {
+            background: #2e2e2e;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .legend-item {
+            display: inline-block;
+            margin-right: 20px;
+            margin-bottom: 10px;
+        }
+        .legend-color {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            vertical-align: middle;
+            border: 1px solid #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>PROJECT H: COMPLETE FLOWCHARTS</h1>
+    
+    <div class="note">
+        <strong>Document Purpose:</strong> These flowcharts map every possible path through Project H, from game start to all endings. Use these as the definitive reference for implementation.
+    </div>
+
+    <div class="legend">
+        <h3 style="color: #c9a84c; margin-top: 0;">Legend</h3>
+        <div class="legend-item"><span class="legend-color" style="background: #90EE90;"></span> Success Path</div>
+        <div class="legend-item"><span class="legend-color" style="background: #FFB6C1;"></span> Failure Path</div>
+        <div class="legend-item"><span class="legend-color" style="background: #FFD700;"></span> Decision Point</div>
+        <div class="legend-item"><span class="legend-color" style="background: #87CEEB;"></span> Trigger Event</div>
+        <div class="legend-item"><span class="legend-color" style="background: #DDA0DD;"></span> Ending</div>
+    </div>
+
+    <!-- MASTER FLOWCHART -->
+    <h2>1. MASTER FLOWCHART — Complete Game Loop</h2>
+    <div class="chart-container">
+        <div class="mermaid">
+graph TD
+    START([Game Start]) --> WELCOME[Welcome Stage<br/>GM Introduction]
+    WELCOME --> ACCEPT{Player<br/>Accepts?}
+    ACCEPT -->|Decline| MENU1([Return to Main Menu])
+    ACCEPT -->|Accept| ARCHETYPE[Choose Archetype<br/>Power 30, Grip 30, Focus 5]
+    
+    ARCHETYPE --> RUN1[RUN 1: Your Soul<br/>Sessions 1-10]
+    
+    RUN1 --> R1FAIL{Ring Bell<br/>3 Times?}
+    R1FAIL -->|No| DEFAULT[DEFAULT ENDING<br/>Soul Taken<br/>Game Over]
+    R1FAIL -->|Yes| CHOICE{THE CHOICE<br/>Leave or Stay?}
+    
+    CHOICE -->|Leave| ESCAPE[ESCAPE ENDING<br/>You Are Free<br/>3 Souls Remain]
+    CHOICE -->|Stay| SOUL1[Soul Selection Screen<br/>Choose 1 of 3 Souls]
+    
+    SOUL1 --> RUN2[RUN 2: First Soul<br/>Sessions 1-10]
+    RUN2 --> R2FAIL{Ring Bell<br/>3 Times?}
+    R2FAIL -->|No| PERMADEATH[FAIL STATE<br/>All Progress Lost<br/>Save Deleted]
+    R2FAIL -->|Yes| SOUL2[Soul Selection Screen<br/>Choose 1 of 2 Remaining]
+    
+    SOUL2 --> RUN3[RUN 3: Second Soul<br/>Sessions 1-10]
+    RUN3 --> R3FAIL{Ring Bell<br/>3 Times?}
+    R3FAIL -->|No| PERMADEATH
+    R3FAIL -->|Yes| SOUL3[Auto-Select<br/>Final Soul]
+    
+    SOUL3 --> RUN4[RUN 4: Final Soul<br/>Sessions 1-10]
+    RUN4 --> R4FAIL{Ring Bell<br/>3 Times?}
+    R4FAIL -->|No| PERMADEATH
+    R4FAIL -->|Yes| TRUE[TRUE ENDING<br/>Liberation<br/>All Souls Freed]
+    
+    DEFAULT --> MENU2([Main Menu<br/>New Game])
+    ESCAPE --> MENU3([Main Menu<br/>Game Complete])
+    PERMADEATH --> MENU4([Main Menu<br/>Start from Run 1])
+    TRUE --> CREDITS([Credits<br/>Game Complete])
+    
+    style START fill:#90EE90
+    style WELCOME fill:#FFD700
+    style CHOICE fill:#FFD700
+    style SOUL1 fill:#FFD700
+    style SOUL2 fill:#FFD700
+    style SOUL3 fill:#FFD700
+    style DEFAULT fill:#DDA0DD
+    style ESCAPE fill:#DDA0DD
+    style PERMADEATH fill:#DDA0DD
+    style TRUE fill:#DDA0DD
+    style RUN1 fill:#87CEEB
+    style RUN2 fill:#87CEEB
+    style RUN3 fill:#87CEEB
+    style RUN4 fill:#87CEEB
+        </div>
+    </div>
+
+    <!-- RUN 1 DETAILED -->
+    <h2>2. RUN 1 DETAILED — Session Flow & Triggers</h2>
+    <div class="chart-container">
+        <div class="mermaid">
+graph TD
+    START([Run 1 Begins]) --> S1[Session 1<br/>Hexes: 1-2, Debuff: 40%]
+    
+    S1 --> S1CHECK{Pass?}
+    S1CHECK -->|Fail| S1BONUS[Bonus Round]
+    S1BONUS --> S1BONUSCHECK{Earn Coin?}
+    S1BONUSCHECK -->|Yes| VEND1[Vending Machine]
+    S1BONUSCHECK -->|No| S2
+    S1CHECK -->|Pass| VEND1
+    VEND1 --> S2[Session 2<br/>Hexes: 3, Debuff: 45%<br/>TRIGGER: First Slip Active]
+    
+    S2 --> SLIP1{First Slip<br/>Occurs?}
+    SLIP1 -->|Yes| TRIG1[TRIGGER 1 FIRES<br/>GM Mocks]
+    SLIP1 -->|No| S2CHECK
+    TRIG1 --> S2CHECK{Pass?}
+    S2CHECK -->|Fail| S2BONUS[Bonus Round]
+    S2CHECK -->|Pass| VEND2[Vending Machine]
+    S2BONUS --> VEND2
+    
+    VEND2 --> S3[Session 3<br/>Hexes: 3, Debuff: 55%<br/>Speed: 1.5 m/s]
+    S3 --> S3CHECK{Pass?}
+    S3CHECK -->|Fail| S4
+    S3CHECK -->|Pass| VEND3[Vending Machine]
+    VEND3 --> S4[Session 4<br/>Hexes: 4, Debuff: 60%<br/>Speed: 1.7 m/s<br/>TRIGGER: First Bell Active]
+    
+    S4 --> BELL1{First Bell<br/>Rings?}
+    BELL1 -->|Yes| TRIG2[TRIGGER 2 FIRES<br/>Lucky Shot]
+    BELL1 -->|No| S4CHECK
+    TRIG2 --> S4CHECK{Pass?}
+    S4CHECK -->|Fail| S5
+    S4CHECK -->|Pass| VEND4[Vending Machine]
+    VEND4 --> S5[Session 5<br/>Hexes: 3, Debuff: 65%<br/>Speed: 2.0 m/s<br/>Penalty: -5 Grip]
+    
+    S5 --> S5CHECK{Pass?}
+    S5CHECK -->|Fail| S6
+    S5CHECK -->|Pass| VEND5[Vending Machine]
+    VEND5 --> S6[Session 6<br/>Hexes: 4, Debuff: 70%<br/>TRIGGER: Second Bell Active]
+    
+    S6 --> BELL2{Second Bell<br/>Rings?}
+    BELL2 -->|Yes| TRIG3[TRIGGER 3 FIRES<br/>...Again]
+    BELL2 -->|No| S6CHECK
+    TRIG3 --> S6CHECK{Pass?}
+    S6CHECK -->|Fail| S7
+    S6CHECK -->|Pass| VEND6[Vending Machine]
+    VEND6 --> S7[Session 7<br/>Hexes: 3, Debuff: 75%<br/>Speed: 2.3 m/s<br/>Penalty: -10 Power]
+    
+    S7 --> S7CHECK{Pass?}
+    S7CHECK -->|Fail| S8
+    S7CHECK -->|Pass| VEND7[Vending Machine]
+    VEND7 --> S8[Session 8<br/>Hexes: 3, Debuff: 75%<br/>Speed: 2.7 m/s<br/>Child Whispers Active]
+    
+    S8 --> S8CHECK{Pass?}
+    S8CHECK -->|Fail| S9
+    S8CHECK -->|Pass| VEND8[Vending Machine]
+    VEND8 --> S9[Session 9<br/>Hexes: 5, Debuff: 80%<br/>Speed: 3.0 m/s<br/>Penalty: -5 Grip, -10 Power<br/>TRIGGER: Final Bell Active]
+    
+    S9 --> BELL3A{Third Bell<br/>Rings?}
+    BELL3A -->|Yes| TRIG4A[TRIGGER 4 FIRES<br/>THE CHOICE]
+    BELL3A -->|No| S9CHECK
+    TRIG4A --> END
+    S9CHECK{Pass?} -->|Fail| S10
+    S9CHECK -->|Pass| VEND9[Vending Machine<br/>FINAL]
+    
+    VEND9 --> S10[Session 10<br/>Hexes: 5, Debuff: 50%<br/>Speed: 1.0 m/s<br/>No Penalties]
+    S10 --> BELL3B{Third Bell<br/>Rings?}
+    BELL3B -->|Yes| TRIG4B[TRIGGER 4 FIRES<br/>THE CHOICE]
+    BELL3B -->|No| FAIL[DEFAULT ENDING]
+    TRIG4B --> END([THE CHOICE])
+    
+    FAIL --> GAMEOVER([Game Over])
+    
+    style START fill:#90EE90
+    style TRIG1 fill:#87CEEB
+    style TRIG2 fill:#87CEEB
+    style TRIG3 fill:#87CEEB
+    style TRIG4A fill:#87CEEB
+    style TRIG4B fill:#87CEEB
+    style FAIL fill:#FFB6C1
+    style END fill:#FFD700
+        </div>
+    </div>
+
+    <!-- RUNS 2-4 FLOW -->
+    <h2>3. RUNS 2-4 — Soul Selection & Session Flow</h2>
+    <div class="chart-container">
+        <div class="mermaid">
+graph TD
+    START([Player Chose STAY]) --> SELECT1[Soul Selection Screen<br/>3 Souls Available]
+    
+    SELECT1 --> PICK1{Player<br/>Selects Soul}
+    PICK1 -->|Brute| BRUTE1[Stats: 80/20/3<br/>75% Slip Risk]
+    PICK1 -->|Coward| COWARD1[Stats: 20/75/3<br/>No Slip, Low Power]
+    PICK1 -->|Perfect| PERFECT1[Stats: 20/25/15<br/>Scanner Crawls]
+    
+    BRUTE1 --> RUN2
+    COWARD1 --> RUN2
+    PERFECT1 --> RUN2
+    
+    RUN2[RUN 2: Sessions 1-10<br/>Same Conditions as Run 1<br/>Shorter GM Dialogue] --> R2RESULT{Ring Bell<br/>3 Times?}
+    
+    R2RESULT -->|No| PERMAFAIL[FAIL STATE<br/>All Souls Return<br/>Save Deleted<br/>Game Over]
+    R2RESULT -->|Yes| FREED1[Soul 1 Freed<br/>Counter: 1/3]
+    
+    FREED1 --> SELECT2[Soul Selection Screen<br/>2 Souls Remaining]
+    SELECT2 --> PICK2{Player<br/>Selects Soul}
+    
+    PICK2 -->|Soul A| SOULA2[Second Soul<br/>Unique Stats]
+    PICK2 -->|Soul B| SOULB2[Second Soul<br/>Unique Stats]
+    
+    SOULA2 --> RUN3
+    SOULB2 --> RUN3
+    
+    RUN3[RUN 3: Sessions 1-10<br/>Same Conditions<br/>GM: You know the terms] --> R3RESULT{Ring Bell<br/>3 Times?}
+    
+    R3RESULT -->|No| PERMAFAIL
+    R3RESULT -->|Yes| FREED2[Soul 2 Freed<br/>Counter: 2/3]
+    
+    FREED2 --> FINAL[Final Soul<br/>Auto-Selected]
+    FINAL --> RUN4[RUN 4: Sessions 1-10<br/>Same Conditions<br/>GM: The last one]
+    
+    RUN4 --> R4RESULT{Ring Bell<br/>3 Times?}
+    R4RESULT -->|No| PERMAFAIL
+    R4RESULT -->|Yes| FREED3[Soul 3 Freed<br/>Counter: 3/3]
+    
+    FREED3 --> LIBERATION[TRUE ENDING<br/>Liberation<br/>Carnival Empty]
+    
+    PERMAFAIL --> MENU([Main Menu<br/>Must Restart from Run 1])
+    LIBERATION --> CREDITS([Credits Roll<br/>Game Complete])
+    
+    style START fill:#90EE90
+    style SELECT1 fill:#FFD700
+    style SELECT2 fill:#FFD700
+    style FINAL fill:#FFD700
+    style PERMAFAIL fill:#FFB6C1
+    style LIBERATION fill:#DDA0DD
+    style RUN2 fill:#87CEEB
+    style RUN3 fill:#87CEEB
+    style RUN4 fill:#87CEEB
+        </div>
+    </div>
+
+    <!-- TRIGGER SYSTEM -->
+    <h2>4. TRIGGER SYSTEM — When Each Fires</h2>
+    <div class="chart-container">
+        <div class="mermaid">
+graph TD
+    START([Any Session Begins]) --> ROUND[Round Starts<br/>3 Rounds Per Session]
+    
+    ROUND --> SCAN[Scanning Stage<br/>Hit Hexes]
+    SCAN --> STRIKE[Striking Stage<br/>Swing Hammer]
+    
+    STRIKE --> SLIPCHECK{Did Hammer<br/>Slip?}
+    SLIPCHECK -->|Yes| FIRSTSLIP{First Slip<br/>This Run?}
+    FIRSTSLIP -->|Yes| TRIG1[TRIGGER 1 FIRES<br/>Run 1: Oh my! Classic mistake<br/>Run 2+: Again with the grip]
+    FIRSTSLIP -->|No| SLIPTAUNT[Random Slip Taunt<br/>Butterfingers / Control]
+    
+    SLIPCHECK -->|No| HEIGHTCALC[Calculate Height<br/>Based on Power & Debuff]
+    SLIPTAUNT --> NEXTR
+    TRIG1 --> NEXTR
+    
+    HEIGHTCALC --> NEXTR{More Rounds<br/>in Session?}
+    NEXTR -->|Yes| ROUND
+    NEXTR -->|No| TOTAL[Calculate Total<br/>Watts & Height]
+    
+    TOTAL --> BELLCHECK{Bell Rang<br/>This Round?}
+    BELLCHECK -->|No| PASSFAIL
+    BELLCHECK -->|Yes| BELLCOUNT{Which Bell<br/>This Run?}
+    
+    BELLCOUNT -->|First| TRIG2[TRIGGER 2 FIRES<br/>Run 1: Lucky shot<br/>Run 2+: Once. Two more.]
+    BELLCOUNT -->|Second| TRIG3[TRIGGER 3 FIRES<br/>Run 1: ...Again. How.<br/>Run 2+: Twice. Don't slip.]
+    BELLCOUNT -->|Third| TRIG4[TRIGGER 4 FIRES<br/>Run 1: THE CHOICE<br/>Run 2+: One more freed]
+    
+    TRIG2 --> ENDSES
+    TRIG3 --> ENDSES
+    TRIG4 --> SPECIAL{Which Run?}
+    
+    SPECIAL -->|Run 1| CHOICE[THE CHOICE<br/>Leave or Stay]
+    SPECIAL -->|Run 2-4| SOULFREE[Soul Freed<br/>Counter Increments]
+    
+    CHOICE --> BRANCH{Player<br/>Choice}
+    BRANCH -->|Leave| ESCAPE[Escape Ending]
+    BRANCH -->|Stay| SOULSELECT[Soul Selection]
+    
+    SOULFREE --> CHECKCOUNT{All 3<br/>Freed?}
+    CHECKCOUNT -->|No| SOULSELECT
+    CHECKCOUNT -->|Yes| LIBERATION[True Ending<br/>Liberation]
+    
+    PASSFAIL{Earned<br/>Coins?} -->|Yes| VENDING[Vending Machine]
+    PASSFAIL -->|No| BONUS{Bonus<br/>Available?}
+    BONUS -->|Yes, S1-2| BONUSROUND[Bonus Round]
+    BONUS -->|No| NEXTSES
+    BONUSROUND --> NEXTSES
+    
+    VENDING --> NEXTSES{More<br/>Sessions?}
+    NEXTSES -->|Yes, S1-9| NEWSESSION[Next Session]
+    NEXTSES -->|No, S10| FINAL[Session 10<br/>Final Chance]
+    
+    NEWSESSION --> START
+    FINAL --> START
+    
+    ENDSES([Session Complete])
+    
+    style TRIG1 fill:#87CEEB
+    style TRIG2 fill:#87CEEB
+    style TRIG3 fill:#87CEEB
+    style TRIG4 fill:#87CEEB
+    style CHOICE fill:#FFD700
+    style SOULSELECT fill:#FFD700
+    style ESCAPE fill:#DDA0DD
+    style LIBERATION fill:#DDA0DD
+        </div>
+    </div>
+
+    <!-- ENDING DECISION TREE -->
+    <h2>5. ENDING DECISION TREE — All Possible Outcomes</h2>
+    <div class="chart-container">
+        <div class="mermaid">
+graph TD
+    START([Game Begins]) --> RUN1START[Run 1 Begins]
+    
+    RUN1START --> RUN1PLAY{Complete<br/>Run 1?}
+    RUN1PLAY -->|Fail S10| DEFAULT[DEFAULT ENDING<br/>Soul Taken<br/>Cycle Continues]
+    RUN1PLAY -->|No Coins| DEFAULT
+    RUN1PLAY -->|Ring Bell 3x| CHOICE{THE CHOICE<br/>Leave or Stay?}
+    
+    CHOICE -->|Leave| ESCAPE[ESCAPE ENDING<br/>You Are Free<br/>3 Souls Remain<br/>THE END]
+    CHOICE -->|Stay| RUN2START[Run 2 Begins<br/>Soul Selected]
+    
+    RUN2START --> RUN2PLAY{Complete<br/>Run 2?}
+    RUN2PLAY -->|Fail| PERMADEATH[FAIL STATE<br/>All Souls Return<br/>Save Deleted<br/>0/3 Freed<br/>GAME OVER]
+    RUN2PLAY -->|Ring Bell 3x| RUN3START[Run 3 Begins<br/>1/3 Freed<br/>Soul Selected]
+    
+    RUN3START --> RUN3PLAY{Complete<br/>Run 3?}
+    RUN3PLAY -->|Fail| PERMADEATH
+    RUN3PLAY -->|Ring Bell 3x| RUN4START[Run 4 Begins<br/>2/3 Freed<br/>Final Soul]
+    
+    RUN4START --> RUN4PLAY{Complete<br/>Run 4?}
+    RUN4PLAY -->|Fail| PERMADEATH
+    RUN4PLAY -->|Ring Bell 3x| LIBERATION[TRUE ENDING<br/>Liberation<br/>All 3 Souls Freed<br/>Carnival Empty<br/>GM Remains Alone<br/>THE END]
+    
+    DEFAULT --> MENUDEF([Main Menu<br/>New Game Possible])
+    ESCAPE --> MENUESC([Main Menu<br/>Run 1 Complete])
+    PERMADEATH --> MENUPERM([Main Menu<br/>Must Restart Run 1])
+    LIBERATION --> CREDITS([Credits Roll<br/>Full Completion])
+    
+    style DEFAULT fill:#DDA0DD
+    style ESCAPE fill:#DDA0DD
+    style PERMADEATH fill:#DDA0DD
+    style LIBERATION fill:#DDA0DD
+    style CHOICE fill:#FFD700
+        </div>
+    </div>
+
+    <!-- SESSION CONDITIONS REFERENCE -->
+    <h2>6. SESSION CONDITIONS REFERENCE — All Runs</h2>
+    <div class="chart-container">
+        <div class="mermaid">
+graph TD
+    S1[Session 1<br/>Hexes: 1-2<br/>Debuff: 40%<br/>Speed: 1.0 m/s<br/>Penalty: None<br/>Triggers: None]
+    S2[Session 2<br/>Hexes: 3<br/>Debuff: 45%<br/>Speed: 1.0 m/s<br/>Penalty: None<br/>Triggers: First Slip]
+    S3[Session 3<br/>Hexes: 3<br/>Debuff: 55%<br/>Speed: 1.5 m/s<br/>Penalty: None<br/>Triggers: First Slip]
+    S4[Session 4<br/>Hexes: 4<br/>Debuff: 60%<br/>Speed: 1.7 m/s<br/>Penalty: None<br/>Triggers: First Slip, First Bell]
+    S5[Session 5<br/>Hexes: 3<br/>Debuff: 65%<br/>Speed: 2.0 m/s<br/>Penalty: -5 Grip<br/>Triggers: First Slip, First Bell]
+    S6[Session 6<br/>Hexes: 4<br/>Debuff: 70%<br/>Speed: 2.0 m/s<br/>Penalty: None<br/>Triggers: First Slip, First Bell, Second Bell]
+    S7[Session 7<br/>Hexes: 3<br/>Debuff: 75%<br/>Speed: 2.3 m/s<br/>Penalty: -10 Power<br/>Triggers: First Slip, First Bell, Second Bell]
+    S8[Session 8<br/>Hexes: 3<br/>Debuff: 75%<br/>Speed: 2.7 m/s<br/>Penalty: None<br/>Triggers: First Slip, First Bell, Second Bell<br/>Child Whispers Active]
+    S9[Session 9<br/>Hexes: 5<br/>Debuff: 80%<br/>Speed: 3.0 m/s<br/>Penalty: -5 Grip, -10 Power<br/>Triggers: All Four]
+    S10[Session 10<br/>Hexes: 5<br/>Debuff: 50%<br/>Speed: 1.0 m/s<br/>Penalty: None<br/>Triggers: Final Bell]
+    
+    S1 --> S2 --> S3 --> S4 --> S5 --> S6 --> S7 --> S8 --> S9 --> S10
+    
+    style S1 fill:#90EE90
+    style S2 fill:#90EE90
+    style S3 fill:#FFD700
+    style S4 fill:#FFD700
+    style S5 fill:#FFB6C1
+    style S6 fill:#FFB6C1
+    style S7 fill:#FFB6C1
+    style S8 fill:#FFB6C1
+    style S9 fill:#8B0000,color:#fff
+    style S10 fill:#87CEEB
+        </div>
+    </div>
+
+    <div class="note">
+        <strong>Implementation Notes:</strong>
+        <ul>
+            <li>All session conditions are identical across Runs 1-4</li>
+            <li>Only GM dialogue changes between Run 1 and Runs 2-4</li>
+            <li>Triggers fire once per run based on player performance</li>
+            <li>Permadeath applies only to Runs 2-4 (Run 1 has Default Ending instead)</li>
+            <li>Soul selection order is player choice (no forced sequence)</li>
+        </ul>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+    </script>
+</body>
+</html>
